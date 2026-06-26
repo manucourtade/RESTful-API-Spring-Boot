@@ -3,6 +3,7 @@ package com.courtademanuel.mi_api.controller;
 import com.courtademanuel.mi_api.dto.ProductDTO;
 import com.courtademanuel.mi_api.model.Product;
 import com.courtademanuel.mi_api.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> addProduct(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<Product> addProduct(@Valid @RequestBody ProductDTO productDTO) {
         Product p = productService.addProduct(productDTO.name(), productDTO.price());
         return ResponseEntity.status(201).body(p);
     }
@@ -36,7 +37,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<Product> updateProduct(@Valid @PathVariable Long id, @RequestBody ProductDTO productDTO) {
         Optional<Product> p = productService.updateProduct(id, productDTO.name(), productDTO.price());
         return p.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
