@@ -1,5 +1,6 @@
 package com.courtademanuel.mi_api.controller;
 
+import com.courtademanuel.mi_api.dto.ProductDTO;
 import com.courtademanuel.mi_api.model.Product;
 import com.courtademanuel.mi_api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product.getName(), product.getPrice());
+    public ResponseEntity<Product> addProduct(@RequestBody ProductDTO productDTO) {
+        Product p = productService.addProduct(productDTO.name(), productDTO.price());
+        return ResponseEntity.status(201).body(p);
     }
 
     @GetMapping("/{id}")
@@ -34,8 +36,8 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        Optional<Product> p = productService.updateProduct(id, product.getName(), product.getPrice());
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        Optional<Product> p = productService.updateProduct(id, productDTO.name(), productDTO.price());
         return p.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
