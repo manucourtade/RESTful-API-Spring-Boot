@@ -23,7 +23,7 @@ public class ProductController {
 
     @PostMapping
     public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product.name(), product.price());
+        return productService.addProduct(product.getName(), product.getPrice());
     }
 
     @GetMapping("/{id}")
@@ -35,7 +35,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        Optional<Product> p = productService.updateProduct(id, product.name(), product.price());
+        Optional<Product> p = productService.updateProduct(id, product.getName(), product.getPrice());
         return p.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
